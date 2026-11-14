@@ -3,8 +3,21 @@ session_start();
 include 'config.php';
 $mensagem = '';
 
-function rUser($username, $pass, $email, $photo){
+function rUser($username, $email, $pass, $photo){
     global $conn;
+
+
+    $stmt = mysqli_prepare($conn, "SELECT 1 FROM user WHERE nome = ?");
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    $usernameTaken = mysqli_stmt_num_rows($stmt) > 0;
+    mysqli_stmt_close($stmt);
+
+    if ($usernameTaken) {
+        return "Esse nome de usuário não está disponível.";
+    }
+
 
     $hashePass = password_hash($pass, PASSWORD_DEFAULT);
     $query = "SELECT * FROM user WHERE nome = '$username' ";
