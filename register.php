@@ -32,8 +32,18 @@ function rUser($username, $pass, $email, $photo){
             $photopath = $upload . $new_name;
 
             if(move_uploaded_file($tmpnamephoto, $photopath)){
-                $query = "INSERT INTO user (nome, email, senha, imagem) VALUES ('$username', '$email', '$hashePass', '$photopath' ";
+                $query = "INSERT INTO user (nome, email, senha, imagem) VALUES ('$username', '$email', '$hashePass', '$photopath') ";
+                if(mysqli_query($conn, $query)){
+                    header('location:login.php');
+                    exit();
+                }else{
+                    return "Tente novamente mais tarde.";
+                }
+            }else{
+                return "Erro ao fazer o upload.";
             }
+        }else{
+            return "ERRO! A imagem deve ter no máximo 2 MB.";
         }
     }else{
         return "Envie uma foto para concluir o cadastro.";
@@ -44,13 +54,10 @@ function rUser($username, $pass, $email, $photo){
 if(isset($_POST['register'])){
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $pass = $_POST['pass'];
+    $pass = $_POST['password'];
     $mensagem = rUser($username, $email, $pass, $_FILES['photo']);
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -70,7 +77,12 @@ if(isset($_POST['register'])){
 
         <div id="etapa2" hidden>
             <input type="text" name="username" placeholder="Nome">
-            <input type="submit" value="Cadastrar">
+            <input type="file" name="photo" accept="image/*" id="fInput" required><br>
+            <div id="preview" class="photo-preview">
+                <img src="#" alt="Prévia da foto escolhida" id="fPreview" width="100" height="100">
+            </div>
+            
+            <input type="submit" name="register" value="Cadastrar">
             <button id="back" type="button">Voltar</button>
             Já possui uma conta<a href="login.php">Logar</a>
         </div>

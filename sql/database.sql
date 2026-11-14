@@ -1,9 +1,9 @@
-CREATE DATABASE IF NOT EXISTE noazul;
+CREATE DATABASE noazul;
 USE noazul;
 
 CREATE TABLE user(
     id int primary key auto_increment,
-    user varchar(100),
+    nome varchar(100),
     email varchar(100),
     senha varchar(255),
     imagem varchar(100),
