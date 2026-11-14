@@ -6,21 +6,21 @@ $mensagem = '';
 function lUser($email, $pass){
     global $conn;
 
-    $query = "SELECT * FROM user WHERE email = '$email' ";
-    $result = mysqli_query($conn, $query);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM user WHERE email = ?");
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) > 0) {
-        $email = mysqli_fetch_assoc($result);
-        if (password_verify($pass, $email["senha"])) {
-            $_SESSION['user_id'] = $email['id'];
+        $user = mysqli_fetch_assoc($result);
+        if (password_verify($pass, $user["senha"])) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['id'];
             header('location: index.php');
             exit();
-        }else{
-            return 'Senha incorreta';
         }
-    }else{
-        return 'Email errado, ou não encontrado';
     }
+    return 'E-mail ou senha incorretos';
 }
 
 
