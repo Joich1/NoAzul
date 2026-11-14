@@ -6,37 +6,32 @@ $mensagem = '';
 function rUser($username, $email, $pass, $photo){
     global $conn;
 
+    $hashePass = password_hash($pass, PASSWORD_DEFAULT);
 
-    $stmt = mysqli_prepare($conn, "SELECT 1 FROM user WHERE nome = ?");
+    
+    $stmt = mysqli_prepare($conn, "SELECT * FROM user WHERE nome = ?");
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-    $usernameTaken = mysqli_stmt_num_rows($stmt) > 0;
-    mysqli_stmt_close($stmt);
-
-    if ($usernameTaken) {
-        return "Esse nome de usuário não está disponível.";
-    }
-
-
-    $hashePass = password_hash($pass, PASSWORD_DEFAULT);
-    $query = "SELECT * FROM user WHERE nome = '$username' ";
-
-    $cUser = mysqli_query($conn, "SELECT * FROM user WHERE nome = '$username' ");
+    $cUser = mysqli_stmt_get_result($stmt);
     if (mysqli_num_rows($cUser) >0 ){
         return "Esse nome de usuário não está disponivél";
     }
 
-    $cEmail = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email' ");
+    $stmt = mysqli_prepare($conn, "SELECT * FROM user WHERE email = ?");
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $cEmail = mysqli_stmt_get_result($stmt);
     if (mysqli_num_rows($cEmail) >0 ){
-        return "Esse nome de usuário não está disponivél";
+        return "Esse e-mail já está cadastrado";
     }
+
 
     $upload = 'uploads/';
     $nPhoto = $_FILES['photo']['name'];
     $tmpnamephoto = $_FILES['photo']['tmp_name'];
     $pSize = $_FILES['photo']['size'];
     $photo_error = $_FILES['photo']['error'];
+    
 
 
     if($photo_error === 0 ){
