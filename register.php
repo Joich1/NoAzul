@@ -33,6 +33,30 @@ function rUser($username, $email, $pass, $photo){
     $photo_error = $_FILES['photo']['error'];
     
 
+    if($photo_error === 0){
+        if($pSize <= 2 * 1024 * 1024){
+            $extension = strtolower(pathinfo($nPhoto, PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png'];
+
+            if(in_array($extension, $allowed) && @getimagesize($tmpnamephoto) !== false){
+                $new_name = uniqid('', true) . "." . $extension;
+                $photopath = $upload . $new_name;
+
+                if(move_uploaded_file($tmpnamephoto, $photopath)){
+                    $stmt = mysqli_prepare($conn, "INSERT INTO user (nome, email, senha, imagem) VALUES (?, ?, ?, ?)");
+                    mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $hashePass, $photopath);
+
+                    if(mysqli_stmt_execute($stmt)){
+                        header('location:login.php');
+                        exit();
+                    }else{
+                        return "tente novamente mais tarde";
+                    }
+                }
+            }
+        }
+    }
+
 
     if($photo_error === 0 ){
         if($pSize <= 2 * 1024 *1024){
