@@ -6,6 +6,14 @@ $mensagem = '';
 function rUser($username, $email, $pass, $photo){
     global $conn;
 
+    if($username === '' || $email === '' || $pass === ''){
+        return "Preencha todos os campos";
+    }
+
+    if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+        return "digite um e-mail válido";
+    }
+
     $hashePass = password_hash($pass, PASSWORD_DEFAULT);
 
     
@@ -67,8 +75,8 @@ function rUser($username, $email, $pass, $photo){
 
 }
 if(isset($_POST['register'])){
-    $username = $_POST['username'];
-    $email = $_POST['email'];
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $pass = $_POST['password'];
     $mensagem = rUser($username, $email, $pass, $_FILES['photo']);
 }
@@ -102,6 +110,8 @@ if(isset($_POST['register'])){
             Já possui uma conta<a href="login.php">Logar</a>
         </div>
     </form>
+
+    <p><?php echo htmlspecialchars($mensagem); ?></p>
     
 
     <script src="main.js"></script>
