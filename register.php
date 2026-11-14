@@ -52,37 +52,20 @@ function rUser($username, $email, $pass, $photo){
                     }else{
                         return "tente novamente mais tarde";
                     }
-                }
-            }
-        }
-    }
-
-
-    if($photo_error === 0 ){
-        if($pSize <= 2 * 1024 *1024){
-            $new_name = uniqid('', true) . "." . pathinfo($nPhoto, PATHINFO_EXTENSION);
-            $photopath = $upload . $new_name;
-
-            if(move_uploaded_file($tmpnamephoto, $photopath)){
-                $query = "INSERT INTO user (nome, email, senha, imagem) VALUES ('$username', '$email', '$hashePass', '$photopath') ";
-                if(mysqli_query($conn, $query)){
-                    header('location:login.php');
-                    exit();
                 }else{
-                    return "Tente novamente mais tarde.";
+                    return "erro ao fazer upload.";
                 }
             }else{
-                return "Erro ao fazer o upload.";
+                return "Envie uma imagem, JPG ou PNG.";
             }
         }else{
-            return "ERRO! A imagem deve ter no máximo 2 MB.";
+            return "ERRO! A imagem deve ter no máximo 2mb";
         }
     }else{
-        return "Envie uma foto para concluir o cadastro.";
+        return "Envie uma foto para concluir o cadastro";
     }
+
 }
-
-
 if(isset($_POST['register'])){
     $username = $_POST['username'];
     $email = $_POST['email'];
