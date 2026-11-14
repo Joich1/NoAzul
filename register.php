@@ -6,8 +6,38 @@ $mensagem = '';
 function rUser($username, $pass, $email, $photo){
     global $conn;
 
-    $cUser = mysqli_query($conn, "SELECT * FROM user WHERE nome = '$username' ")
+    $hashePass = password_hash($pass, PASSWORD_DEFAULT);
+    $query = "SELECT * FROM user WHERE nome = '$username' ";
 
+    $cUser = mysqli_query($conn, "SELECT * FROM user WHERE nome = '$username' ");
+    if (mysqli_num_rows($cUser) >0 ){
+        return "Esse nome de usuário não está disponivél";
+    }
+
+    $cEmail = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email' ");
+    if (mysqli_num_rows($cEmail) >0 ){
+        return "Esse nome de usuário não está disponivél";
+    }
+
+    $upload = 'uploads/';
+    $nPhoto = $_FILES['photo']['name'];
+    $tmpnamephoto = $_FILES['photo']['tmp_name'];
+    $pSize = $_FILES['photo']['size'];
+    $photo_error = $_FILES['photo']['error'];
+
+
+    if($photo_error === 0 ){
+        if($pSize <= 2 * 1024 *1024){
+            $new_name = uniqid('', true) . "." . pathinfo($nPhoto, PATHINFO_EXTENSION);
+            $photopath = $upload . $new_name;
+
+            if(move_uploaded_file($tmpnamephoto, $photopath)){
+                $query = "INSERT INTO user (nome, email, senha, imagem) VALUES ('$username', '$email', '$hashePass', '$photopath' ";
+            }
+        }
+    }else{
+        return "Envie uma foto para concluir o cadastro.";
+    }
 }
 
 
@@ -15,7 +45,7 @@ if(isset($_POST['register'])){
     $username = $_POST['username'];
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $mensagem = rUser($username, $email, $pass, $photo);
+    $mensagem = rUser($username, $email, $pass, $_FILES['photo']);
 }
 ?>
 
