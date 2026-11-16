@@ -16,7 +16,7 @@ function lUser($email, $pass){
         if (password_verify($pass, $user["senha"])) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['iduser'];
-            header('location: index.php');
+            header('location: overview.php');
             exit();
         }
     }
