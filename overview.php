@@ -15,8 +15,22 @@ if (!isset($_SESSION['user_id'])) {
     <title>NoAzul - Visão Geral</title>
 </head>
 <body>
+    <main>
+        <div>
+            <p>sem lançamentos de receita</p>
+            <button type="button" id="btnr">Fazer Lançamento</button> <a href="#">lançamento</a>
+        </div>
+
+        <div id="expense" hidden>
+            <button type="button" id="x">X</button>
+            <form action="overview.php" method="post">
+
+            </form>
+        </div>
+
+    </main>
     
 
-    <script src="main.js"></script>
+    <script src="overview.js"></script>
 </body>
 </html>

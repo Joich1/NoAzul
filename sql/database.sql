@@ -11,7 +11,7 @@ CREATE TABLE user(
     imagem varchar(100),
     data_criacao TIMESTAMP DEFAULT current_timestamp
 );
-
+/*
 CREATE TABLE account(
     idaccount int primary key auto_increment,
     iduser int not null,
