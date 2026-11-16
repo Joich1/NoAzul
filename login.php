@@ -15,7 +15,7 @@ function lUser($email, $pass){
         $user = mysqli_fetch_assoc($result);
         if (password_verify($pass, $user["senha"])) {
             session_regenerate_id(true);
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['iduser'];
             header('location: index.php');
             exit();
         }
