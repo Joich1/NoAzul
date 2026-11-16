@@ -3,22 +3,22 @@ USE noazul;
 
 CREATE TABLE user(
     iduser int primary key auto_increment,
-    nome varchar(100),
-    email varchar(100),
-    senha varchar(255),
+    nome varchar(100) not null,
+    email varchar(100) not null,
+    senha varchar(255) not null,
     imagem varchar(100),
     data_criacao TIMESTAMP DEFAULT current_timestamp
 );
 
 CREATE TABLE transaction(
     id int auto_increment primary key,
-    iduser int not nul,
+    iduser int not null,
     type ENUM('income', 'expense') not null,
     amount decimal(10,2) not null,
     category varchar(50),
     description varchar(255),
-    tranasnction_date DATE not null,
+    transaction_date DATE not null,
     created_at TIMESTAMP DEFAULT current_timestamp,
-    FOREIGN KEY (iduser) REFERENCES user(id) ON DELETE CASCADE
+    FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE
 
 );
