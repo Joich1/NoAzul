@@ -12,3 +12,13 @@ CREATE TABLE user(
     data_criacao TIMESTAMP DEFAULT current_timestamp
 );
 
+CREATE TABLE category(
+    idcategory int primary key auto_increment,
+    iduser int not null,
+    name varchar(50) not null,
+    type ENUM('income', 'expense') not null,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE,
+    UNIQUE (iduser, name, type)
+);
+
