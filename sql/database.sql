@@ -23,3 +23,9 @@ CREATE TABLE transaction(
 
 );
 
+CREATE TABLE account(
+    idaccount int primary key auto_incrment,
+    iduser int not null,
+    name varchar(50) not null,
+    name varchar(50) not null,
+);
