@@ -31,3 +31,20 @@ CREATE TABLE category(
     FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE,
     UNIQUE (iduser, name, type)
 );
+
+CREATE TABLE transaction(
+    id int primary key auto_increment,
+    iduser int not null,
+    idaccount int not null,
+    idcategory int not null,
+    type ENUM('income', 'expense') not null,
+    amount decimal(10,2) not null,
+    status ENUM('paid', 'pending') not null default 'paid',
+    description varchar(255),
+    transaction_date DATE not null,
+    due_date DATE,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE,
+    FOREIGN KEY (idaccount) REFERENCES account(idaccount),
+    FOREIGN KEY (idcategory) REFERENCES category(idcategory)
+);
