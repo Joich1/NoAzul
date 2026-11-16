@@ -17,5 +17,8 @@ CREATE TABLE transaction(
     amount decimal(10,2) not null,
     category varchar(50),
     description varchar(255),
+    tranasnction_date DATE not null,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    FOREIGN KEY (iduser) REFERENCES user(id) ON DELETE CASCADE
 
 );
