@@ -11,9 +11,10 @@ CREATE TABLE user(
 );
 
 CREATE TABLE transaction(
-    idtran INT PRIMARY KEY auto_increment,
-    iduser int,
-    amount decimal(10,2),
+    id int auto_increment primary key,
+    iduser int not nul,
+    type ENUM('income', 'expense') not null,
+    amount decimal(10,2) not null,
     category varchar(50),
     description varchar(255),
 
