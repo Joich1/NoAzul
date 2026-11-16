@@ -114,7 +114,7 @@ if(isset($_POST['register'])){
     <p><?php echo htmlspecialchars($mensagem); ?></p>
     
 
-    <script src="main.js"></script>
+    <script src="./js/register.js"></script>
 </body>
 </html>
 

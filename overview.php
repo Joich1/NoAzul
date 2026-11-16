@@ -59,6 +59,6 @@ if (!isset($_SESSION['user_id'])) {
     </main>
     
 
-    <script src="overview.js"></script>
+    <script src="./js/overview.js"></script>
 </body>
 </html>

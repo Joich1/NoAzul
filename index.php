@@ -17,6 +17,6 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     
 
-    <script src="main.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
