@@ -42,10 +42,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <body>
 
 <form action="login.php" method="post">
-    <input type="text" name="email">
-    <input type="text" name="password">
+    <input type="email" name="email" placeholder="email">
+    <input type="text" name="password" placeholder="sneha">
 
-    <input type="submit" name="logar" value="Login">
+    <input type="submit" name="logar" value="Login"> não possui uma conta? <a href="register.php">cadastrar</a>
 </form>
     
 

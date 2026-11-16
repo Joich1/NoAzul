@@ -47,4 +47,4 @@ CREATE TABLE transaction(
     FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE,
     FOREIGN KEY (idaccount) REFERENCES account(idaccount),
     FOREIGN KEY (idcategory) REFERENCES category(idcategory)
-);
+);*/

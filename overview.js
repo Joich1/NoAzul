@@ -10,10 +10,10 @@ if(btnr && x){
             }
         }
 
-        expense.hidden = true;
+        expense.hidden = false;
     })
 
     x.addEventListener('click', () =>{
-        expense.hidden = false;
+        expense.hidden = true;
     })
 }
