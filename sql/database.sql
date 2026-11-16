@@ -12,6 +12,16 @@ CREATE TABLE user(
     data_criacao TIMESTAMP DEFAULT current_timestamp
 );
 
+CREATE TABLE account(
+    idaccount int primary key auto_increment,
+    iduser int not null,
+    name varchar(50) not null,
+    type ENUM('checking', 'savings', 'wallet', 'investment') not null default 'checking',
+    initial_balance decimal(12,2) not null default 0,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE
+);
+
 CREATE TABLE category(
     idcategory int primary key auto_increment,
     iduser int not null,
@@ -21,4 +31,3 @@ CREATE TABLE category(
     FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE,
     UNIQUE (iduser, name, type)
 );
-
