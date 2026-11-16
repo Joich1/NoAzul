@@ -11,7 +11,7 @@ CREATE TABLE user(
 );
 
 CREATE TABLE transaction(
-    id int auto_increment primary key,
+    id int primary key auto_increment,
     iduser int not null,
     type ENUM('income', 'expense') not null,
     amount decimal(10,2) not null,
@@ -22,3 +22,4 @@ CREATE TABLE transaction(
     FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE
 
 );
+
