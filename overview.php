@@ -92,7 +92,17 @@ if(isset($_SESSION['user_id'])){
 <body>
     <main>
         <div>
-            
+            <?php if (empty($incomes)): ?>
+                <p>sem lançamentos de receita</p>
+            <?php else: ?>
+
+                <ul>
+                    <?php foreach($incomes as $income): ?>
+                        <li>
+                            <?php echo ('d/m/Y'), str
+                        </li>
+                </ul>
+                <button type="button" id="btnr">Fazer Lançamento</button> <a href="#">lançamento</a>
         </div>
 
         <div id="expense" <?php echo $mensagem === '' ? 'hidden' : ''; ?>>
