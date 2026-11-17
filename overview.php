@@ -38,9 +38,9 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
         return "Descrição e observações podem ter no máximo 255 caracteres.";
     }
 
-    $d = DateTime::CreateFromFormat('Y-m-d', $date);
-    if(!$d || $d->format('Y-m-d') !== $date){
-        return "Data inválida.";
+    $d = DateTime::createFromFormat('Y-m-d', $date);
+    if (!$d || $d->format('Y-m-d') !== $date) {
+    return "Data inválida.";
     }
 
     $stmt = mysqli_prepare($conn, "INSERT INTO `transaction` (iduser, type, amount, description, notes, transaction_date) VALUES (?, ?, ?, ?, ?, ?) ");
@@ -63,12 +63,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $description = trim($_POST['description'] ?? '');
     $notes = trim($_POST['notes'] ?? '');
 
-    /*
+    
     if(!isset($_SESSION['user_id'])){
         $mensagem = "Você precisa estar logado para salvar.";
     }else{
         $mensagem = addTransaction($_SESSION['user_id'], $type, $amount, $description, $notes, $date, $repetition);
-    }*/
+    }
 }
 
 $incomes = [];
@@ -114,8 +114,8 @@ if(isset($_SESSION['user_id'])){
                 <button type="button" id="x">X</button>
                 <h1>nova <select name="type">
                     <option hidden>Receita</option>
-                    <option value="income">Despesa</option>
-                    <option value="expense">Receita</option>
+                    <option value="income">Receita</option>
+                    <option value="expense">Despesa</option>
                     <option value="transfer">Transferência</option>
                 </select>
             </h1>
@@ -125,7 +125,7 @@ if(isset($_SESSION['user_id'])){
                 <select name="repetition">
                     <option hidden>Repetição</option>
                     <option value="single">Única</option>
-                    <option value="installemnt">Parcelada</option>
+                    <option value="installment">Parcelada</option>
                     <option value="recurring">Fixa</option>
                 </select><br>
 
