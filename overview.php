@@ -30,9 +30,20 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
         return "Digite um valor maior que 0.";
     }
     $amount = round((float)$amount, 2);
+    if($amount > 99999999.99){
+        return "Valor muito alto.";
+    }
 
-    
+    if(mb_strlen($description) > 255 || mb_strlen($notes) > 255){
+        return "Descrição e observações podem ter no máximo 255 caracteres.";
+    }
 
+    $d = DateTime::CreateFromFormat('Y-m-d', $date);
+    if(!$d || $d->format('Y-m-d') !== $date){
+        return "Data inválida.";
+    }
+
+    $stmt = mysqli_prepare($conn, "INSERT INTO");
 }
 
 
