@@ -43,7 +43,15 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
         return "Data inválida.";
     }
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO");
+    $stmt = mysqli_prepare($conn, "INSERT INTO `transaction` (iduser, type, amount, description, notes, transaction_date) VALUES (?, ?, ?, ?, ?, ?) ");
+    mysqli_stmt_bind_param($stmt, "isdsss", $iduser, $type, $amount, $description, $notes, $date );
+
+    if(mysqli_stmt_execute($stmt)){
+        header('location: overview.php');
+        exit();
+    }
+
+    return "Tente novamente mais tarde.";
 }
 
 
@@ -54,6 +62,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $repetition = $_POST['repetition'] ?? 'single';
     $description = trim($_POST['description'] ?? '');
     $notes = trim($_POST['notes'] ?? '');
+
+    /*
+    if(!isset($_SESSION['user_id'])){
+        $mensagem = "Você precisa estar logado para salvar.";
+    }else{
+        $mensagem = addTransaction($_SESSION['user_id'], $type, $amount, $description, $notes, $date, $repetition);
+    }*/
 }
 
 $incomes = [];
@@ -77,8 +92,7 @@ if(isset($_SESSION['user_id'])){
 <body>
     <main>
         <div>
-            <p>sem lançamentos de receita</p>
-            <button type="button" id="btnr">Fazer Lançamento</button> <a href="#">lançamento</a>
+            
         </div>
 
         <div id="expense" <?php echo $mensagem === '' ? 'hidden' : ''; ?>>
