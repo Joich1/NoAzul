@@ -3,14 +3,16 @@ session_start();
 include 'config.php';
 
 if (!isset($_SESSION['user_id'])) {
+    //só pra teste, depois tirar!
     //header('location: login.php');
-    echo 'atençao, você não está logado';
+    echo 'Atençao, você não está logado';
     //exit();
 }
 
 $mensagem = '';
 
 function addTransaction($iduser, $type, $amount, $description, $notes, $date){
+    global $conn;
 
 }
 
@@ -22,6 +24,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $repetition = $_POST['repetition'] ?? 'single';
     $description = trim($_POST['description'] ?? '');
     $notes = trim($_POST['notes'] ?? '');
+}
+
+$incomes = [];
+if(isset($_SESSION['user_id'])){
+    $stmt = mysqli_prepare($conn, "SELECT amount, description, transaction_date FROM `transaction` WHERE iduser = ? AND type = 'income' ORDER BY transaction_date  DESC, id DESC");
+    mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $incomes = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 ?>
 
