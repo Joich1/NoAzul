@@ -4,12 +4,6 @@ const x = document.getElementById('x');
 
 if(btnr && x){
     btnr.addEventListener('click', () =>{
-        for(const field of expense.querySelectorAll('input')){
-            if(!field.reportValidity()){
-                return;
-            }
-        }
-
         expense.hidden = false;
     })
 

@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <option>Fazer isso depois tambem</option>
                 </select><br>
 
-                <input type="text" placeholder="Observações">
+                <input type="text" name="notes" placeholder="Observações" maxlength="255">
 
                 <button type="submit">Salvar</button>
 
