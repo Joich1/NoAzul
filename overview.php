@@ -99,9 +99,13 @@ if(isset($_SESSION['user_id'])){
                 <ul>
                     <?php foreach($incomes as $income): ?>
                         <li>
-                            <?php echo ('d/m/Y'), str
+                            <?php echo date('d/m/Y', strtotime($income['transaction_date'])); ?> -
+                            <?php echo htmlspecialchars($income['description']); ?> -
+                            R$ <?php echo number_format($income['amount'], 2, ',', '.'); ?> 
                         </li>
+                        <?php endforeach; ?>
                 </ul>
+                <?php endif; ?>
                 <button type="button" id="btnr">Fazer Lançamento</button> <a href="#">lançamento</a>
         </div>
 
