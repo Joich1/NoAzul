@@ -11,8 +11,27 @@ if (!isset($_SESSION['user_id'])) {
 
 $mensagem = '';
 
-function addTransaction($iduser, $type, $amount, $description, $notes, $date){
+function addTransaction($iduser, $type, $amount, $description, $notes, $date, $repetition){
     global $conn;
+
+    if($type === 'transfer'){
+        return "Transferência ainda não está disponível.";
+    }
+
+    if($repetition !== 'single'){
+        return "parcelada e fixa ainda não estão disponível.";
+    }
+
+    if(!in_array($type, ['income', 'expense'])){
+        return "Escolha o tipo de lançamento.";
+    }
+
+    if(!is_numeric($amount) || $amount <= 0){
+        return "Digite um valor maior que 0.";
+    }
+    $amount = round((float)$amount, 2);
+
+    
 
 }
 
