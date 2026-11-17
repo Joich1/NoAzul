@@ -20,7 +20,8 @@ CREATE TABLE transaction(
     description varchar(255),
     notes varchar(255),
     transaction_date DATE not null,
-    
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    FOREIGN KEY (iduser) REFERENCES user(iduser) ON DELETE CASCADE
 );
 
 /*
