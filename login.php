@@ -49,6 +49,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 </form>
     
 
-    <script src="main2.js"></script>
 </body>
 </html>
