@@ -58,7 +58,7 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
 function getTransactions($iduser, $type){
     global $conn;
 
-    $stmt = mysqli_prepare($conn, "SELECT");
+    $stmt = mysqli_prepare($conn, "SELECT amount, description, transaction_date FROM `transaction` WHERE iduser = ? AND type = ? ORDER BY transaction_date DESC, id DESC");
     mysqli_stmt_bind_param($stmt, "is", $iduser, $type);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -69,7 +69,7 @@ function getTransactions($iduser, $type){
 function getBalance($iduser){
     global $conn;
 
-    $stmt = mysqli_prepare($conn, "SELECT COALESCE(SUM(CASE WHEN type = 'income' THE amount ELSE -amount END), 0) AS balance FROM `transaction` WHERE iduser = ? AND transaction_date <= CURDATE()");
+    $stmt = mysqli_prepare($conn, "SELECT COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END), 0) AS balance FROM `transaction` WHERE iduser = ? AND transaction_date <= CURDATE()");
     mysqli_stmt_bind_param($stmt, "i", $iduser);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -100,11 +100,9 @@ $expense = [];
 $balance = 0;
 
 if(isset($_SESSION['user_id'])){
-    $stmt = mysqli_prepare($conn, "SELECT amount, description, transaction_date FROM `transaction` WHERE iduser = ? AND type = 'income' ORDER BY transaction_date  DESC, id DESC");
-    mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $incomes = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $incomes = getTransactions($_SESSION['user_id'], 'income');
+    $expenses = getTransactions($_SESSION['user_id'], 'expense');
+    $balance = getBalance($_SESSION['user_id']);
 }
 ?>
 
@@ -147,7 +145,7 @@ if(isset($_SESSION['user_id'])){
                 <ul>
                     <?php foreach($expenses as $expense): ?>
                         <li>
-                            <?php echo date ('d/m/Y', strtotime($expense['transaction_dated']));?> - 
+                            <?php echo date ('d/m/Y', strtotime($expense['transaction_date']));?> - 
                             <?php echo htmlspecialchars($expense['description']); ?> -
                             R$ <?php echo number_format($expense['amount'], 2, ',', '.');?>
                         </li>
