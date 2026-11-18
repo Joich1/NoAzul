@@ -30,7 +30,8 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
         return "Digite um valor maior que 0.";
     }
     $amount = round((float)$amount, 2);
-    if($amount > 99999999.99){
+
+    if($amount > 999999999.99){
         return "Valor muito alto.";
     }
 
