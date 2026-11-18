@@ -29,8 +29,8 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
     if(!is_numeric($amount) || $amount <= 0){
         return "Digite um valor maior que 0.";
     }
-    $amount = round((float)$amount, 2);
 
+    $amount = round((float)$amount, 2);
     if($amount > 999999999.99){
         return "Valor muito alto.";
     }
@@ -54,6 +54,27 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
 
     return "Tente novamente mais tarde.";
 }
+
+function getTransactions($iduser, $type){
+    global $conn;
+
+    $stmt = mysqli_prepare($conn, "SELECT");
+    mysqli_stmt_bind_param($stmt, "is", $iduser, $type);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function getBalance($iduser){
+    global $conn;
+
+    $stmt = mysqli_prepare($conn, "SELECT COALESCE(SUM(CASE WHEN type = 'income' THE amount ELSE -amount END), 0) AS balance FROM `transaction` WHERE iduser = ? AND transaction_date <= CURDATE()");
+    mysqli_stmt_bind_param($stmt, "i", $iduser);
+
+    return
+}
+
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -129,30 +150,27 @@ if(isset($_SESSION['user_id'])){
             <?php endif; ?>
         </div>
 
+        <p><?php echo htmlspecialchars($mensagem); ?></p>
+
         <div id="expense" <?php echo $mensagem === '' ? 'hidden' : ''; ?>>
-            <?php if ($mensagem !== ''): ?>
-                <p style="color: red;"><?php echo htmlspecialchars($mensagem); ?></p>
-            <?php endif; ?>
             <form action="overview.php" method="post">
                 <button type="button" id="x">X</button>
                 <h1>nova <select name="type">
-                    <option value="income" hidden>Receita</option>
                     <option value="income">Receita</option>
                     <option value="expense">Despesa</option>
                     <option value="transfer">Transferência</option>
                 </select>
             </h1>
 
-                <input type="number" step="0.01" min="0.01" name="amount" placeholder="R$ 00,0"> 
-                <input type="date" name="transaction_date">
+                <input type="number" step="0.01" min="0.01" name="amount" placeholder="R$ 00,0" required> 
+                <input type="date" name="transaction_date" required>
                 <select name="repetition">
-                    <option value="single" hidden>Repetição</option>
                     <option value="single">Única</option>
                     <option value="installment">Parcelada</option>
                     <option value="recurring">Fixa</option>
                 </select><br>
 
-                <input type="text" name="description" placeholder="descrição">
+                <input type="text" name="description" placeholder="descrição" maxlength="255">
                 
                 <!--não sei se eesse select vai entrar, talvez não-->
                 <select name="status">
