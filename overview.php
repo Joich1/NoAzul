@@ -92,6 +92,9 @@ if(isset($_SESSION['user_id'])){
 <body>
     <main>
         <div>
+            <p>Saldo atual: R$ <?php echo number_format($balance, 2, ',', '.') ?></p>
+        </div>
+        <div>
             <?php if (empty($incomes)): ?>
                 <p>sem lançamentos de receita</p>
             <?php else: ?>
@@ -107,6 +110,23 @@ if(isset($_SESSION['user_id'])){
                 </ul>
                 <?php endif; ?>
                 <button type="button" id="btnr">Fazer Lançamento</button> <a href="#">lançamento</a>
+        </div>
+
+        <div>
+            <h2>Despesas</h2>
+            <?php if(empty($expenses)):?>
+                <p>Sem lançamentos de despesa</p>
+            <?php else:?>
+                <ul>
+                    <?php foreach($expenses as $expense): ?>
+                        <li>
+                            <?php echo date ('d/m/Y', strtotime($expense['transaction_dated']));?> - 
+                            <?php echo htmlspecialchars($expense['description']); ?> -
+                            R$ <?php echo number_format($expense['amount'], 2, ',', '.');?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </div>
 
         <div id="expense" <?php echo $mensagem === '' ? 'hidden' : ''; ?>>
