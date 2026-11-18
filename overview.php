@@ -39,8 +39,8 @@ function addTransaction($iduser, $type, $amount, $description, $notes, $date, $r
     }
 
     $d = DateTime::createFromFormat('Y-m-d', $date);
-    if (!$d || $d->format('Y-m-d') !== $date) {
-    return "Data inválida.";
+    if(!$d || $d->format('Y-m-d') !== $date){
+        return "Data inválida.";
     }
 
     $stmt = mysqli_prepare($conn, "INSERT INTO `transaction` (iduser, type, amount, description, notes, transaction_date) VALUES (?, ?, ?, ?, ?, ?) ");
@@ -63,7 +63,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $description = trim($_POST['description'] ?? '');
     $notes = trim($_POST['notes'] ?? '');
 
-    
     if(!isset($_SESSION['user_id'])){
         $mensagem = "Você precisa estar logado para salvar.";
     }else{
@@ -110,10 +109,13 @@ if(isset($_SESSION['user_id'])){
         </div>
 
         <div id="expense" <?php echo $mensagem === '' ? 'hidden' : ''; ?>>
+            <?php if ($mensagem !== ''): ?>
+                <p style="color: red;"><?php echo htmlspecialchars($mensagem); ?></p>
+            <?php endif; ?>
             <form action="overview.php" method="post">
                 <button type="button" id="x">X</button>
                 <h1>nova <select name="type">
-                    <option hidden>Receita</option>
+                    <option value="income" hidden>Receita</option>
                     <option value="income">Receita</option>
                     <option value="expense">Despesa</option>
                     <option value="transfer">Transferência</option>
@@ -123,7 +125,7 @@ if(isset($_SESSION['user_id'])){
                 <input type="number" step="0.01" min="0.01" name="amount" placeholder="R$ 00,0"> 
                 <input type="date" name="transaction_date">
                 <select name="repetition">
-                    <option hidden>Repetição</option>
+                    <option value="single" hidden>Repetição</option>
                     <option value="single">Única</option>
                     <option value="installment">Parcelada</option>
                     <option value="recurring">Fixa</option>
