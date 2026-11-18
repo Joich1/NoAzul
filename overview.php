@@ -71,8 +71,11 @@ function getBalance($iduser){
 
     $stmt = mysqli_prepare($conn, "SELECT COALESCE(SUM(CASE WHEN type = 'income' THE amount ELSE -amount END), 0) AS balance FROM `transaction` WHERE iduser = ? AND transaction_date <= CURDATE()");
     mysqli_stmt_bind_param($stmt, "i", $iduser);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
 
-    return
+    return (float)$row['balance'];
 }
 
 
@@ -93,6 +96,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 $incomes = [];
+$expense = [];
+$balance = 0;
+
 if(isset($_SESSION['user_id'])){
     $stmt = mysqli_prepare($conn, "SELECT amount, description, transaction_date FROM `transaction` WHERE iduser = ? AND type = 'income' ORDER BY transaction_date  DESC, id DESC");
     mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
