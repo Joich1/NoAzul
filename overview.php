@@ -3,7 +3,6 @@ session_start();
 include 'config.php';
 
 if (!isset($_SESSION['user_id'])) {
-    //só pra teste, depois tirar!
     header('location: login.php');
     echo 'Atençao, você não está logado';
     exit();
