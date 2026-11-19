@@ -3,9 +3,10 @@ session_start();
 include 'config.php';
 
 if (!isset($_SESSION['user_id'])) {
+    /*
     header('location: login.php');
     echo 'Atençao, você não está logado';
-    exit();
+    exit();*/
 }
 
 $mensagem = '';
